@@ -87,7 +87,7 @@ The `fire` package has been set up to fire `main` function when called. If the s
 The bash command should be able to fire the script using the following syntax:
 
 ```
-python send_email.py main --subject="YOUR SUBJECT"
+python send_email.py --subject="YOUR SUBJECT"
 ```
 
 ## Final Mission
