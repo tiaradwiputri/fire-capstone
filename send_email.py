@@ -10,7 +10,6 @@ import pandas as pd
 import altair as alt
 
 import fire
-
  
 def extract_contacts(contact_file):
   """
@@ -19,9 +18,11 @@ def extract_contacts(contact_file):
   """
   names = []
   emails = []
+  print(contact_file)
   with open(contact_file, mode='r', encoding='utf-8') as contacts:
+    print(contacts)
     for contact in contacts:
-      names.append(' '.join(contact.split()[0:-2]))
+      names.append(' '.join(contact.split()[0:-1]))
       emails.append(contact.split()[-1])
   return names, emails
 
@@ -34,15 +35,17 @@ def create_message(template_file):
   return Template(template_content)
 
 def compose_email(template, name, data_file):
+  
   start_date, end_date, total_spent, total_conversion, cpc_1, cpc_2 = extract_summary(data_file)
   composed = template.substitute(
     PERSON_NAME=name,
     START_DATE=start_date,
     END_DATE=end_date,
-    TOTAL_SPENT=total_spent,
-    TOTAL_CONVERSION=total_conversion,
-    CPC_1=cpc_1,
-    CPC_2=cpc_2
+    TOTAL_SPENT="{:,}".format(total_spent),
+    TOTAL_CONVERSION="{:,}".format(total_conversion),
+    CPC_1="{:,}".format(cpc_1),
+    CPC_2="{:,}".format(cpc_2),
+    GITHUB_LINK='https://github.com/google/python-fire'
   )
   return composed
 
@@ -98,7 +101,7 @@ def create_plot(file_path="data_input/data.csv"):
       column='campaign_id',
       title='Facebook Ads Report'
   )
-  imagename = 'plot/'+date.today().strftime(format="%d-%m-%Y")+'.png'
+  imagename = 'plot/'+date.today().strftime(format="%d %b %Y")+'.png'
   chart.save(imagename)
   return(imagename)
 
@@ -108,8 +111,8 @@ def extract_summary(file_path="data_input/data.csv"):
   campaigns = fb[fb['campaign_id'].isin(['936', '1178'])]
   campaigns = campaigns[campaigns.spent > 0]
 
-  start_date = campaigns.reporting_start.min().date().strftime(format="%d-%m-%Y")
-  end_date = campaigns.reporting_start.max().date().strftime(format="%d-%m-%Y")
+  start_date = campaigns.reporting_start.min().date().strftime(format="%d %b %Y")
+  end_date = campaigns.reporting_start.max().date().strftime(format="%d %b %Y")
 
   total_spent = campaigns.spent.sum()
   total_conversion = campaigns.total_conversion.sum()
@@ -125,16 +128,14 @@ def extract_summary(file_path="data_input/data.csv"):
 def main(subject, \
   contact_file='templates/contacts.txt', \
   template_file='templates/body.txt', \
-  data_file='data_input/data.csv'  
-  ):
+  data_file='data_input/data.csv'):
   """   
   Return two lists names, emails containing names and email addresses
   read from a file specified by filename.
   """
   s = authenticate_account(EMAIL=os.environ['EMAIL_ADDRESS'], \
     PASSWORD=os.environ['EMAIL_PASSWORD'])
-
-  names, emails = extract_contacts(contact_file)
+  names, emails = extract_contacts(contact_file=contact_file)
   for name, email in zip(names, emails):
     msg = MIMEMultipart()       # create a message
     # add in the actual person name to the message template
@@ -162,7 +163,6 @@ def main(subject, \
     # send the message via the server set up earlier.
     s.send_message(msg)
     del msg
-
 
 if __name__ == '__main__':
   fire.Fire(main)
