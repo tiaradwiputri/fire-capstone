@@ -18,9 +18,7 @@ def extract_contacts(contact_file):
   """
   names = []
   emails = []
-  print(contact_file)
   with open(contact_file, mode='r', encoding='utf-8') as contacts:
-    print(contacts)
     for contact in contacts:
       names.append(' '.join(contact.split()[0:-1]))
       emails.append(contact.split()[-1])
@@ -114,8 +112,8 @@ def extract_summary(file_path="data_input/data.csv"):
   start_date = campaigns.reporting_start.min().date().strftime(format="%d %b %Y")
   end_date = campaigns.reporting_start.max().date().strftime(format="%d %b %Y")
 
-  total_spent = campaigns.spent.sum()
-  total_conversion = campaigns.total_conversion.sum()
+  total_spent = int(campaigns.spent.sum())
+  total_conversion = int(campaigns.total_conversion.sum())
 
   cpc = campaigns.groupby(['campaign_id'])[['spent', 'total_conversion']].sum()
   cpc['CPC'] = cpc['spent']/cpc['total_conversion']
