@@ -46,7 +46,7 @@ def compose_email(template, name, data_file):
     TOTAL_CONVERSION="{:,}".format(total_conversion),
     CPC_1="{:,}".format(cpc_1),
     CPC_2="{:,}".format(cpc_2),
-    GITHUB_LINK='https://github.com/google/python-fire'
+    GITHUB_LINK='https://github.com/tiaradwiputri/fire-capstone'
   )
   return composed
 
