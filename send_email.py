@@ -7,14 +7,14 @@ import os
 from datetime import date
 
 import pandas as pd
-import altair as alt
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 import fire
  
 def extract_contacts(contact_file):
   """
-  Return two lists names, emails containing names and email addresses
-  read from a file specified by filename.
+  Return two lists contacts, containing names and email addresses
   """
   names = []
   emails = []
@@ -33,7 +33,10 @@ def create_message(template_file):
   return Template(template_content)
 
 def compose_email(template, name, data_file):
-  
+  """   
+  Compose email from template and data
+  // TODO read data once
+  """
   start_date, end_date, total_spent, total_conversion, cpc_1, cpc_2 = extract_summary(data_file)
   composed = template.substitute(
     PERSON_NAME=name,
@@ -49,8 +52,7 @@ def compose_email(template, name, data_file):
 
 def authenticate_account(EMAIL, PASSWORD, SERVER='outlook'):
   """   
-  Return two lists names, emails containing names and email addresses
-  read from a file specified by filename.
+  Authenticate SMTP account for two host: gmail or outlook
   """
   if(SERVER == 'gmail'):
     host = 'smtp.gmail.com'
@@ -68,39 +70,29 @@ def authenticate_account(EMAIL, PASSWORD, SERVER='outlook'):
 
 def create_plot(file_path="data_input/data.csv"):
   """   
-  Fetch data from data source
-  Export a plot
+  Fetch data from data source and export a plot
+  // TODO change plot to pandas matplotlib
   """
   fb = pd.read_csv(file_path, parse_dates=[1,2])
   campaigns = fb[fb['campaign_id'].isin(['936', '1178'])]
   campaigns = campaigns[campaigns.spent > 0]
-  grouped = campaigns.groupby(by=['campaign_id', 'age', 'gender', 'reporting_start'], as_index=False)\
+  grouped = campaigns.groupby(by=['campaign_id', 'age', 'reporting_start'], as_index=False)\
     [['interest1', 'interest2', 'interest3', 'impressions', 'clicks', 'spent', 'total_conversion']].\
     sum()
-  source = grouped
-  base = alt.Chart(source).encode(
-      x=alt.X(
-          'reporting_start:T',
-          axis=alt.Axis(title = 'Date')
-      )
-      
-  )
 
-  bar = base.mark_bar(size=20).encode(
-      y='spent:Q',
-      color='age',
-  )
+  fig = plt.figure(1, figsize=(15,6))
 
-  line = base.mark_line(color='red').encode(
-      y='total_conversion:Q'
-  )
+  for i, campaign in enumerate(grouped.campaign_id.unique()):
+      plt.subplot(1, 2, i+1)
+      df = grouped[grouped.campaign_id == campaign].loc[:,['age', 'reporting_start', 'total_conversion']]
+      df.reporting_start = df.reporting_start.dt.date
+      df.pivot(index='reporting_start', columns='age', values='total_conversion').fillna(0).plot.bar(ax=plt.gca())
 
-  chart = alt.layer(bar, line, data=source).facet(
-      column='campaign_id',
-      title='Facebook Ads Report'
-  )
+  fig.suptitle('Campaign Conversion per Age Group', fontsize=20)
+  fig.autofmt_xdate()
+
   imagename = 'plot/'+date.today().strftime(format="%d %b %Y")+'.png'
-  chart.save(imagename)
+  fig.savefig(imagename)
   return(imagename)
 
   
@@ -148,7 +140,7 @@ def main(subject, \
     msg['From']=os.environ['EMAIL_ADDRESS']
     msg['To']=email
     msg['Subject']=subject
-    
+    print('SUBJECT: '+subject)
     # add in the message body
     msg.attach(MIMEText(message, 'plain'))
 
@@ -157,6 +149,7 @@ def main(subject, \
     img_data = open(image_name, 'rb').read()
     image = MIMEImage(img_data, name=os.path.basename(image_name))
     msg.attach(image)
+    
     
     # send the message via the server set up earlier.
     s.send_message(msg)
