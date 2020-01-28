@@ -17,7 +17,7 @@ pip install -f requirements.txt
 Since it is beneficial for us to create a draft using Jupyter Notebook, let's also create an iPython Kernel using the following command:
 
 ```
-python -m ipykernel install --user --name=fire
+python -m ipykernel install --user --name=<env_name>
 ```
 
 ## The Challenge
@@ -56,7 +56,7 @@ if __name__ == '__main__':
   fire.Fire(extract_contacts)
 ```
 
-If you have understood how the function works, you should be able to perform the following command in a CLI: `python debug.py --contact_file=templates/contacts.txt`
+This chunk of code is simply exporting `extract_contacts` function accessible in our CLI. Then, you should be able to perform the following command in a CLI: `python debug.py --contact_file=templates/contacts.txt`
 
 If you have set the function properly, it should extracted 2 elements list, one containing all names and one containing all emails. Try to edit the `contacts.txt` stored within templates folder, and change the list into mentor@algorit.ma and your own email. See if it produce a similar output with the following example:
 
@@ -129,10 +129,7 @@ Implementing what you have learned on the visualization course, please create a 
 
 ![](plot/today.png)
 
-Try to play around in your Jupyter Notebook and find out the appropriate code you can use to fill in the blank (`___`) space in the application script. The main steps 
-
-
- Please complete the following pre-processing steps:
+Try to play around in your Jupyter Notebook and find out the appropriate code you can use to fill in the blank (`___`) space in the application script. Please complete the following pre-processing steps:
 
 1. Read the dataset and filter the `campaign_id` to only 936 and 1178, it is listed as an adjustable parameter of `id`. We are going to filter out all the rows that contain variable `spent` equals to 0, this will eliminate all rows when the ads is not actually running.
 
