@@ -133,7 +133,7 @@ def create_plot(file_path="data_input/data.csv", id=['936', '1178']):
   # Iterate to create 1 plot campaign at a time
   for i, campaign in enumerate(grouped.campaign_id.unique()):
     plt.subplot(1, len(id), i+1)
-    # filter by campaign id
+    
     df = grouped[grouped[___] == campaign].loc[:,['age', 'reporting_start', 'total_conversion']]
     df['reporting_start'] = df['reporting_start'].dt.date
     pivot = df.pivot(index='___', columns='___', values='___').fillna(0)
@@ -143,7 +143,6 @@ def create_plot(file_path="data_input/data.csv", id=['936', '1178']):
   fig.autofmt_xdate()
 
   # Save file to plot folder
-  # This requires a selenium to be setup, please make sure you have it installed in your machine
   imagename = 'plot/'+date.today().strftime(format="%d %b %Y")+'.png'
   fig.savefig(imagename)
   return(imagename)
@@ -162,8 +161,8 @@ def main(subject, \
 
   # // TODO: CHALLENGE 2
   # // Extract data and prepare template email
-  data_dict = extract_summary(data_file)
   template = create_template(template_file)
+  data_dict = extract_summary(data_file)
 
   # // TODO: CHALLENGE 3
   # // Log in into Outlook email account

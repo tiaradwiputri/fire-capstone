@@ -1,12 +1,9 @@
-from send_email import extract_contacts, extract_summary, create_template, compose_email
+from send_email_ans import extract_contacts, extract_summary, create_template, compose_email
 import fire
 
-def debug(subject, \
-  contact_file='templates/contacts.txt', \
+def debug(name,
   template_file='templates/body.txt', \
   data_file='data_input/data.csv'):
-
-    names, emails = extract_contacts(contact_file=contact_file)
 
     # // TODO: CHALLENGE 2
     # // Extract data and prepare template email
@@ -14,7 +11,7 @@ def debug(subject, \
     template = create_template(template_file)
 
     # Print for debugging purposes
-    print(compose_email(template, "debugger", data_dict))
+    print(compose_email(template, name, data_dict))
 if __name__ == '__main__':
   # Export to Fire
   fire.Fire(debug)
