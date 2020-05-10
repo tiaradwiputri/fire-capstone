@@ -1,6 +1,6 @@
 Hi ${PERSON_NAME},
 
-This is an auto-generated email, reporting Facebook ads campaign performance for all listed campaign from ${START_DATE} to ${END_DATE}. The total marketing budget spent on the campaign is ${TOTAL_SPENT} with a total coversion of ${TOTAL_CONVERSION}. The cost per conversion gained for the two campaigns is ${CPC_1} and ${CPC_2} respectively.
+This is an auto-generated email, reporting Facebook ads campaign performance for all listed campaign from ${START_DATE} to ${END_DATE}. The total marketing budget spent on the campaign is ${TOTAL_SPENT} with a total conversion of ${TOTAL_CONVERSION}. The cost per conversion gained for the campaigns is ${CPC}.
 
 Please find the complete script on my Github: ${GITHUB_LINK}
 
