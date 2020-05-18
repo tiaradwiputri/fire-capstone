@@ -1,4 +1,4 @@
-from send_email_ans import extract_contacts, extract_summary, create_template, compose_email
+from send_email import extract_contacts, extract_summary, create_template, compose_email
 import fire
 
 def debug(name,
