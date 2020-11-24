@@ -11,7 +11,7 @@ Hal pertama yang harus dilakukan adalah melakukan pengaturan environment conda. 
 ```
 conda env create -n <env_name> python=3.7
 conda activate <env_name>
-pip install -f requirements.txt
+pip install -r requirements.txt
 ```
 Untuk memudahkan proses drafting aplikasi, kita juga akan menggunakan Jupyter Notebook. Untuk itu, kita harus menyiapkan kernel terlebih dahulu dengan command berikut:
 
