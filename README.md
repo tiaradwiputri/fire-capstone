@@ -11,7 +11,7 @@ There are few prerequisites needed for this project, first you will need to prep
 ```
 conda env create -n <env_name> python=3.7
 conda activate <env_name>
-pip install -f requirements.txt
+pip install -r requirements.txt
 ```
 
 Since it is beneficial for us to create a draft using Jupyter Notebook, let's also create an iPython Kernel using the following command:
@@ -30,6 +30,15 @@ In this capstone project, you will try to complete 4 challenges:
 4. Export a plot using matplotlib to be attached to the email
 
 Finally, you will need to complete the final mission by sending us an auto generated email to a specified email.
+
+## Rubric
+
+The maximum score you will obtain from this project is 16 points:  
+
+- Environment preparation (*2pts*)  
+- Understanding the contact list creation (*2pts*)  
+- Compose email: create templates, compose messages, extract summary (*6pts*)  
+- Export a plot using matplotlib (*6pts*)
 
 ### Application Modularity
 
